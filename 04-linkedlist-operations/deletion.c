@@ -16,14 +16,14 @@ void traverse(struct Node* ptr)
 }
 
 // DELETE FIRST
-struct Node* deleteFirst(struct Node* ptr) {
+struct Node* deleteFromStart(struct Node* ptr) {
     struct Node* newHead = ptr->next;
     free(ptr);
     return newHead;
 }
 
 // DELETE LAST
-void deleteLast(struct Node* ptr) {
+void deleteFromEnd(struct Node* ptr) {
     struct Node* p = ptr ;
     struct Node* q = ptr->next;
     while (q->next!=NULL)
@@ -36,7 +36,7 @@ void deleteLast(struct Node* ptr) {
 }
 
 // DELETE FROM INDEX
-void deleteIndex(struct Node* ptr, int index) {
+void deleteFromIndex(struct Node* ptr, int index) {
     int i = 0;
     while(ptr!=NULL) {
         if(i == index -1) {
@@ -50,7 +50,31 @@ void deleteIndex(struct Node* ptr, int index) {
     }
 }
 
-// DELETE BY VALUE
+/* ========= OR =======
+void deleteFromIndex(struct Node* head, int index) {
+    int i = 0;
+    struct Node* p = head;
+    struct Node* q = head->next;
+    
+    if(isEmpty(head)) {
+        printf("Linked List is empty !!");
+    }
+    else {
+        while(q != NULL) {
+            if(i == index -1) {
+                p->next = q->next;
+                free(q);
+                break;
+            }
+            
+            i++;
+            p = p->next;
+            q = q->next;
+        }
+    }
+}
+*/
+
 
 
 
@@ -81,7 +105,7 @@ int main() {
     /*
     printf("BEFORE DELETE FIRST \n");
     traverse(head);
-    head = deleteFirst(head);
+    head = deleteFromStart(head);
     printf("AFTER DELETE FIRST \n");
     traverse(head);
     */
@@ -91,7 +115,7 @@ int main() {
     /*
     printf("BEFORE DELETE LAST \n");
     traverse(head);
-    deleteLast(head);
+    deleteFromEnd(head);
     printf("AFTER DELETE LAST \n");
     traverse(head);
     */
@@ -100,7 +124,7 @@ int main() {
     // DELETE AT INDEX
     printf("BEFORE DELETE FROM INDEX \n");
     traverse(head);
-    deleteIndex(head, 4);
+    deleteFromIndex(head, 3);
     printf("AFTER DELETE FROM INDEX \n");
     traverse(head);
     
