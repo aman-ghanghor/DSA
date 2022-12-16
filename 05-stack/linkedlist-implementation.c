@@ -88,6 +88,30 @@ int peek(struct Node* top, int position) {
     }
 }
 
+// STACK TOP
+int stackTop(struct Node* top) {
+    if(isEmpty(top)) {
+       printf("Stack is empty !!\n");
+    }
+    else {
+        return top->data;
+    }
+}
+
+// STACK BOTTOM
+int stackBottom(struct Node* top) {
+    if(isEmpty(top)) {
+       printf("Stack is empty !!\n");
+    }
+    else {
+        struct Node* ptr = top;
+        while(ptr->next != NULL) {
+            ptr = ptr->next;
+        }
+        return ptr->data;
+    }
+}
+
 
 
 int main() {

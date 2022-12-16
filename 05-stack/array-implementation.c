@@ -1,136 +1,143 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// STACK ARRAY IMPLEMENTATION
+// ======= STACK ARRAY IMPLEMENTATION =======
+
 struct Stack {
     int size;
     int top;
-    int* arr ;
-};
+    int* arr;
+} ;
 
-// TRAVERSE 
-void traverse(struct Stack* stack) {
-    int i = stack->top ;
-    while(i!= -1) {
-        printf("%d\n", stack->arr[i]);
-        i--;
-    }
-} 
-
-// EMPTY
-int isEmpty(struct Stack* stack) {
-    if(stack->top == -1) {
+// Is Empty
+int isEmpty(struct Stack* s) {
+    if(s->top == -1) {
         return 1;
     }
-    else {
-        return 0;
-    }
+    return 0;
 }
 
-// FULL 
-int isFull(struct Stack* stack) {
-    if(stack->top == stack->size - 1) {
+// Is Full
+int isFull(struct Stack* s) {
+    if(s->top == s->size - 1) {
         return 1;
     }
-    else {
-        return 0;
-    }
+    return 0;
 }
 
-// PUSH 
-void push(struct Stack* stack, int data) {
-    if(!isFull(stack)) {
-        stack->top = stack->top + 1;
-        stack->arr[stack->top] = data ;
-    }
-    else {
-        printf("stack is full!!\n") ;
-    }
-}
-
-// POP 
-void pop(struct Stack* stack) {
-    if(!isEmpty(stack)) {
-        stack->top = stack->top - 1;
-    }
-    else {
-        printf("stack is empty!!\n");
-    }
-}
-
-// STACK TOP
-int stackTop(struct Stack* stack) {
-    if(!isEmpty(stack)) {
-        return stack->arr[stack->top] ;
-    }
-    else {
-        printf("stack is empty!!\n");
-    }
-}
-
-// STACK BOTTOM 
-int stackBottom(struct Stack* stack) {
-    if(!isEmpty(stack)) {
-        int i = stack->top;
-        while(i != 0) {
-            i--;
+// Traverse
+void traverse(struct Stack* s) {
+    if(!isEmpty(s)) {
+        for(int i=s->top; i >= 0; i--) {
+            printf("%d \n", s->arr[i]);
         }
-        return stack->arr[i] ;
     }
     else {
-        printf("stack is empty!!\n");
+        printf("Stack is empty !!\n");
     }
 }
 
-
-// PEEK
-int peek(struct Stack* stack, int position) {
-    int arrIndex = stack->top - position + 1 ;
-    if(arrIndex >= 0) {
-        int value = stack->arr[arrIndex] ;
-        return value ;
+// Push
+void push(struct Stack* s, int data) {
+    if(!isFull(s)) {
+        s->top = s->top + 1;
+        s->arr[s->top] = data;
     }
     else {
-        printf("Invalid position\n") ;
+        printf("Stack is full !!\n");
     }
 }
+
+// Pop
+int pop(struct Stack* s) {
+    if(!isEmpty(s)) {
+        int item = s->arr[s->top];
+        s->top = s->top - 1;
+        return item;
+    }
+    else {
+        printf("Stack is empty !!\n");
+    }
+}
+
+// Peek
+int peek(struct Stack* s, int position) {   // position from top
+    if(!isEmpty(s)) {
+        int peekIndex = s->top - position + 1;
+        return s->arr[peekIndex];
+    }
+    else {
+        printf("Stack is empty !!\n");
+    }
+}
+
+// Stack Top 
+int stackTop(struct Stack* s) {   // position from top
+    if(!isEmpty(s)) {
+        return s->arr[s->top];
+    }
+    else {
+        printf("Stack is empty !!\n");
+    }
+}
+
+// Stack Bottom
+int stackBottom(struct Stack* s) {   // position from top
+    if(!isEmpty(s)) {
+        return s->arr[0];
+    }
+    else {
+        printf("Stack is empty !!\n");
+    }
+}
+
 
 
 
 int main() {
-    struct Stack* stack = (struct Stack*) malloc(sizeof(struct Stack)) ;
-    stack->size = 100;
-    stack->top = -1 ;
-    stack->arr = (int*) malloc(sizeof(stack->size)) ;
-
-    // PUSHING ELEMENT IN ARRAY
-    push(stack, 5);
-    push(stack, 9);
-    push(stack, 12);
-    push(stack, 3) ;
+    int n = 100;
+    struct Stack * stack = (struct Stack*) malloc(sizeof(struct Stack)) ;
+    stack->size = n;
+    stack->arr = (int*) malloc(n*sizeof(int));
+    stack->top = -1;
+    
+    // IS EMPTY
+    if(isEmpty(stack)) {
+        printf("Stack is empty !!\n");
+    }
+    
+    // IS FULL
+    if(isFull(stack)) {
+        printf("Stack is full !!\n");
+    }
+    
+    // PUSH
     push(stack, 2);
-    printf("AFTER PUSHING :\n");
-    traverse(stack) ;
-
-
-    // POP
-    printf("AFTER POPPING :\n");
-    pop(stack);
+    push(stack, 3);
+    push(stack, 5);
+    push(stack, 8);
+    push(stack, 14);
+    push(stack, 20);
+    
+    printf("After push: \n");
     traverse(stack);
-
-
-    // STACK TOP
-    printf("STACK TOP : %d \n", stackTop(stack));
-
-
-    // STACK BOTTOM
-    printf("STACK BOTTOM : %d \n", stackBottom(stack));
-
+    
+    // POP
+    printf("\nPopped item: %d \n", pop(stack));
+    printf("After pop: \n");
+    traverse(stack);
     
     // PEEK
-    printf("PEEK ITEM: %d\n", peek(stack, 2)) ;
-
-
+    printf("\nPeeked item: %d \n", peek(stack, 3));
+    printf("After peek: \n");
+    traverse(stack);
+    
+    // STACK TOP
+    printf("\nStack top: %d \n", stackTop(stack));
+    
+    // STACK Bottom
+    printf("\nStack top: %d \n", stackBottom(stack));
+ 
 
     return 0;
 }

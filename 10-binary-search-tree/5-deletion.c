@@ -79,6 +79,31 @@ struct Node* ipredecessor(struct Node* root) {
 }
 
 
+// INSERT
+// Insert Recursively
+struct Node* insert(struct Node* root, int key) {
+        if(root == NULL) {
+            return createNode(key);
+        }
+
+        
+        if(key == root->data) {
+           printf("This node already exists\n");
+           return root;
+        }
+        if(key < root->data) {
+            root->left = insert(root->left, key);
+        }
+        if(key > root->data) {
+            root->right = insert(root->right, key);
+        }
+
+        return root;
+
+}
+
+
+
 
 // DELETION
 struct Node* deleteNode(struct Node *root, int value){
@@ -86,11 +111,7 @@ struct Node* deleteNode(struct Node *root, int value){
     if(root == NULL) {
         return NULL;
     }
-    if(root->left == NULL && root->right == NULL) {
-        free(root);
-        return NULL;
-    }
- 
+
     // searching the node
     if(value < root->data) {
        // this indicate the update in root left tree after deletion in root left tree
@@ -103,27 +124,47 @@ struct Node* deleteNode(struct Node *root, int value){
        root->right = deleteNode(root->right, value);
     }
     else {
-        struct Node* ipre = ipredecessor(root);
-        root->data = ipre->data;
-        // modify root left tree (root->left) after deletion in root left tree.
-        root->left = deleteNode(root->left, ipre->data);
+        if(root->left == NULL && root->right == NULL) {
+            struct Node* temp = root;
+            root = NULL;
+            free(temp);
+        }
+        else if(root->left != NULL && root->right == NULL) {
+            root = root->left;
+        }
+        else if(root->left == NULL && root->right != NULL) {
+            root = root->right;
+        }
+        else {
+            struct Node* ipre = ipredecessor(root);
+            printf("\nipre == %d \n", ipre->data);
+            root->data = ipre->data;
+            // modify root left tree (root->left) after deletion in root left tree.
+            root->left = deleteNode(root->left, ipre->data);
+        }
     }
-    // return the actual root address
+
+    // return updated not 
     return root ;
 }
 
 
 int main()
 {
-    struct Node *p = createNode(50);
-    struct Node *p1 = createNode(40);
-    struct Node *p2 = createNode(60);
 
-    struct Node *p11 = createNode(20);
-    struct Node *p12 = createNode(45);
+   struct Node* root = insert(NULL, 50);
 
-    struct Node *p21 = createNode(55);
-    struct Node *p22 = createNode(70);
+   insert(root, 40);
+   insert(root, 60);
+   insert(root, 20);
+   insert(root, 45);
+   insert(root, 55);
+   insert(root, 70);
+   insert(root, 40);
+   insert(root, 43);
+   insert(root, 42);
+   insert(root, 44);
+
 
 
 
@@ -134,26 +175,25 @@ int main()
              40    60
            /  \    /  \
           20  45  55   70
-          
+              / 
+            43  
+           /  \
+          42  44
+
+    
     */
 
-    // linking p to p1 and p2
-    p->left = p1;
-    p->right = p2;
 
-    p1->left = p11;
-    p1->right = p12;
+    inOrder(root);
 
-    p2->left = p21;
-    p2->right = p22;
-
-    inOrder(p);
-
-    printf("\n%d \n", isBST(p));
+    printf("\n%d \n", isBST(root));
 
     // DELETE NODE
-    printf("Deleted Node Value: %d \n", deleteNode(p, 50)->data) ;
-    inOrder(p);
+    int key = 50;
+    deleteNode(root, key);
+    printf("\nAfter deleting %d: \n", key) ;
+    inOrder(root);
+
 
     return 0;
 }

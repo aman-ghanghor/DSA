@@ -67,8 +67,9 @@ struct Node* searchIter(struct Node* root, int value) {
     }
 }
 
-// INSERTION
-int insert(struct Node* root, int key) {
+
+// Insert Iteratively
+int insertIter(struct Node* root, int key) {
 
     if(root != NULL) {
         struct Node* n = (struct Node*) malloc(sizeof(struct Node));
@@ -102,15 +103,37 @@ int insert(struct Node* root, int key) {
         return 0;
 
     }
+}
+
+
+// Insert Recursively
+struct Node* insertRecur(struct Node* root, int key) {
+        if(root == NULL) {
+            return createNode(key);
+        }
+        
+        if(key == root->data) {
+           printf("This node already exists\n");
+           return root;
+        }
+        if(key < root->data) {
+            root->left = insertRecur(root->left, key);
+        }
+        if(key > root->data) {
+            root->right = insertRecur(root->right, key);
+        }
+
+        return root;
 
 }
 
 
 
 
+
 int main()
 {
-    struct Node *p = createNode(50);
+    struct Node *root = createNode(50);
     struct Node *p1 = createNode(40);
     struct Node *p2 = createNode(60);
 
@@ -133,8 +156,8 @@ int main()
     */
 
     // linking p to p1 and p2
-    p->left = p1;
-    p->right = p2;
+    root->left = p1;
+    root->right = p2;
 
     p1->left = p11;
     p1->right = p12;
@@ -142,18 +165,27 @@ int main()
     p2->left = p21;
     p2->right = p22;
 
-    inOrder(p);
+    inOrder(root);
 
-    printf("\n%d \n", isBST(p));
+    printf("\n%d \n", isBST(root));
 
-    if(insert(p, 46)) {
-        printf("INSERTED SUCCESSFULLY \n");
-    }
-    else {
-        printf("UNABLE TO INSERT \n");
-    }
+    // INSERT
 
-    inOrder(p);
+    // Insert Iteratively
+
+    // if(insertIter(root, 46)) {
+    //     printf("INSERTED SUCCESSFULLY \n");
+    // }
+    // else {
+    //     printf("UNABLE TO INSERT \n");
+    // }
+
+    // Insert Recursively
+
+
+    insertRecur(root, 62);
+
+    inOrder(root);
 
     return 0;
 }
